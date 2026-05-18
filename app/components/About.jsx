@@ -1,21 +1,21 @@
 export default function About() {
   const stats = [
-    { value: '3+', label: 'Projects Completed', icon: '🚀' },
-    { value: '1+', label: 'Years Experience', icon: '⏳' },
-    { value: '10+', label: 'Modern Tools', icon: '🛠️' },
-    { value: '100%', label: 'Commitment', icon: '💎' },
+    { value: "3+", label: "Projects Completed", icon: "🚀" },
+    { value: "1+", label: "Years Experience", icon: "⏳" },
+    { value: "10+", label: "Modern Tools", icon: "🛠️" },
+    { value: "100%", label: "Commitment", icon: "💎" },
   ];
 
   const highlights = [
     {
-      title: 'Programming Journey',
+      title: "Programming Journey",
       content:
-        'My journey into web development started with curiosity and a passion for technology. Beginning with HTML, CSS, and JavaScript, I gradually moved into modern frontend and backend development using React, Next.js, Node.js, Express.js, and MongoDB to build responsive and user-friendly web applications.',
+        "My journey into web development started with curiosity and a passion for technology. Beginning with HTML, CSS, and JavaScript, I gradually moved into modern frontend and backend development using React, Next.js, Node.js, Express.js, and MongoDB to build responsive and user-friendly web applications.",
     },
     {
-      title: 'Crafting Solutions',
+      title: "Crafting Solutions",
       content:
-        'I enjoy combining design and development to build clean, responsive, and user-friendly web applications. From modern landing pages to full-stack MERN projects, I focus on performance, usability, and writing clean, maintainable code.',
+        "I enjoy combining design and development to build clean, responsive, and user-friendly web applications. From modern landing pages to full-stack MERN projects, I focus on performance, usability, and writing clean, maintainable code.",
     },
   ];
 
@@ -345,7 +345,7 @@ export default function About() {
 
         <div className="container relative z-10">
           {/* Section Header */}
-          <div className="section-header reveal-item" style={{ '--d': 1 }}>
+          <div className="section-header reveal-item" style={{ "--d": 1 }}>
             <span className="section-subtitle">Discovery</span>
             <h2 className="section-title">
               About <span className="text-gradient">Me</span>
@@ -355,7 +355,7 @@ export default function About() {
 
           <div className="about-grid">
             {/* Left: Identity Card */}
-            <div className="about-visual reveal-item" style={{ '--d': 2 }}>
+            <div className="about-visual reveal-item" style={{ "--d": 2 }}>
               <div className="identity-card">
                 <div className="card-glass-effect" />
                 <div className="identity-header">
@@ -380,8 +380,10 @@ export default function About() {
 
                 <div className="identity-footer">
                   <div className="tag-cloud">
-                    {['Next.js', 'Node.js', 'UI/UX', 'MongoDB'].map((tag) => (
-                      <span key={tag} className="mini-tag">{tag}</span>
+                    {["Next.js", "Node.js", "UI/UX", "MongoDB"].map((tag) => (
+                      <span key={tag} className="mini-tag">
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -395,24 +397,31 @@ export default function About() {
             <div className="about-content">
               <div className="story-stack">
                 {highlights.map((item, idx) => (
-                  <div key={idx} className="story-item reveal-item" style={{ '--d': idx + 3 }}>
+                  <div
+                    key={idx}
+                    className="story-item reveal-item"
+                    style={{ "--d": idx + 3 }}
+                  >
                     <h3 className="story-title">
-                      <span className="title-prefix">0{idx + 1}.</span> {item.title}
+                      <span className="title-prefix">0{idx + 1}.</span>{" "}
+                      {item.title}
                     </h3>
                     <p className="story-text">{item.content}</p>
                   </div>
                 ))}
               </div>
 
-              <div className="about-tags reveal-item" style={{ '--d': 6 }}>
+              <div className="about-tags reveal-item" style={{ "--d": 6 }}>
                 {[
-                  'Problem Solving',
-                  'Fast Learner',
-                  'Detail-Oriented',
-                  'Team Collaboration',
-                  'Adaptability',
+                  "Problem Solving",
+                  "Fast Learner",
+                  "Detail-Oriented",
+                  "Team Collaboration",
+                  "Adaptability",
                 ].map((tag) => (
-                  <span key={tag} className="professional-tag">{tag}</span>
+                  <span key={tag} className="professional-tag">
+                    {tag}
+                  </span>
                 ))}
               </div>
             </div>
