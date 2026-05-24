@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { projects } from '../../data/projects';
+import { FaGithub } from 'react-icons/fa';
 
 export async function generateStaticParams() {
   return projects.map(p => ({ slug: p.id }));
@@ -38,12 +39,9 @@ export default async function ProjectDetailPage({ params }) {
 
         {/* Hero image */}
         <div style={{ position: 'relative', height: '360px', borderRadius: '20px', overflow: 'hidden', marginBottom: '2.5rem', boxShadow: 'var(--shadow-lg)' }}>
-          <Image src={project.image} alt={project.title} fill style={{ objectFit: 'cover' }} priority />
+          <Image src={project.image} alt={project.title} fill style={{ objectFit: 'cover', objectPosition: 'top' }} priority />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,13,20,0.85) 0%, rgba(13,13,20,0.2) 60%, transparent 100%)' }} />
           <div style={{ position: 'absolute', bottom: '1.5rem', left: '2rem', right: '2rem' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
-              {project.tags.map(tag => <span key={tag} className="tag" style={{ fontSize: '0.75rem' }}>{tag}</span>)}
-            </div>
             <h1 style={{ fontFamily: 'var(--font-outfit)', fontSize: 'clamp(1.6rem,4vw,2.4rem)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{project.title}</h1>
           </div>
         </div>
@@ -55,8 +53,8 @@ export default async function ProjectDetailPage({ params }) {
             Live Demo
           </a>
           <a id="project-github-link" href={project.githubLink} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-            GitHub (Client)
+            <FaGithub />
+            GitHub (Repository)
           </a>
         </div>
 
@@ -116,7 +114,7 @@ export default async function ProjectDetailPage({ params }) {
         {/* Next project navigation */}
         <div style={{ marginTop: '3rem', textAlign: 'center' }}>
           <p style={{ fontSize: '0.85rem', color: 'var(--color-text-subtle)', marginBottom: '1rem' }}>Explore more projects</p>
-          <Link id="all-projects-link" href="/#projects" className="btn btn-outline">← All Projects</Link>
+          <Link id="all-projects-link" href="https://github.com/Abid-Hossain-Sifat?tab=repositories" className="btn btn-outline">← All Projects</Link>
         </div>
       </div>
     </div>

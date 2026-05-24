@@ -21,7 +21,7 @@ export default function Hero() {
   return (
     <section id="home" className="hero-section">
       {/* Dynamic Background */}
-      <div className="bg-pattern" />
+      <div className="jsx-3486097126205c31 bg-pattern" />
       <div className="blob-container">
         <div className="mesh-blob mesh-1" />
         <div className="mesh-blob mesh-2" />
@@ -75,7 +75,7 @@ export default function Hero() {
             </div>
 
             <div className="hero-cta-group reveal-item" style={{ "--d": "6" }}>
-              <a href="/resume.pdf" download className="cta-button primary">
+              <a href="https://drive.google.com/file/d/1dVSNrVG5tyJfzLSZYV9kjU0FEevxHVVv/view" download className="cta-button primary" target="_blank">
                 <span>Download Resume</span>
                 <svg
                   width="20"
