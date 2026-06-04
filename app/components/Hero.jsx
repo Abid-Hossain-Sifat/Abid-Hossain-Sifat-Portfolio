@@ -75,7 +75,7 @@ export default function Hero() {
             </div>
 
             <div className="hero-cta-group reveal-item" style={{ "--d": "6" }}>
-              <a href="https://drive.google.com/file/d/1dVSNrVG5tyJfzLSZYV9kjU0FEevxHVVv/view" download className="cta-button primary" target="_blank">
+              <a href="https://drive.google.com/file/d/17VU70d-AE48F1bPcgLS5niSRJzfSiW3r/view?usp=sharing" download className="cta-button primary" target="_blank">
                 <span>Download Resume</span>
                 <svg
                   width="20"
