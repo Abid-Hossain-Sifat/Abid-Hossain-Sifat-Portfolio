@@ -21,7 +21,7 @@ export default function Hero() {
   return (
     <section id="home" className="hero-section">
       {/* Dynamic Background */}
-      <div className="jsx-3486097126205c31 bg-pattern" />
+      <div className="jsx-3486097126205c31 jsx-3486097126205c31 bg-pattern" />
       <div className="blob-container">
         <div className="mesh-blob mesh-1" />
         <div className="mesh-blob mesh-2" />
@@ -136,6 +136,7 @@ export default function Hero() {
                     src="/abid.png"
                     alt="Abid Hossain"
                     fill
+                    sizes="(max-width: 640px) 280px, (max-width: 1024px) 320px, 420px"
                     className="profile-image"
                     priority
                   />

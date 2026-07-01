@@ -39,7 +39,7 @@ export default async function ProjectDetailPage({ params }) {
 
         {/* Hero image */}
         <div style={{ position: 'relative', height: '360px', borderRadius: '20px', overflow: 'hidden', marginBottom: '2.5rem', boxShadow: 'var(--shadow-lg)' }}>
-          <Image src={project.image} alt={project.title} fill style={{ objectFit: 'cover', objectPosition: 'top' }} priority />
+          <Image src={project.image} alt={project.title} fill sizes="(max-width: 768px) 100vw, 900px" style={{ objectFit: 'cover', objectPosition: 'top' }} priority />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,13,20,0.85) 0%, rgba(13,13,20,0.2) 60%, transparent 100%)' }} />
           <div style={{ position: 'absolute', bottom: '1.5rem', left: '2rem', right: '2rem' }}>
             <h1 style={{ fontFamily: 'var(--font-outfit)', fontSize: 'clamp(1.6rem,4vw,2.4rem)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{project.title}</h1>

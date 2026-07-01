@@ -1,11 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { projects } from "../data/projects";
 
+const INITIAL_COUNT = 3;
+
 export default function Projects() {
+  const [showAll, setShowAll] = useState(false);
+
+  const visibleProjects = showAll ? projects : projects.slice(0, INITIAL_COUNT);
+  const hasMore = projects.length > INITIAL_COUNT;
+
   return (
     <section
       id="projects"
@@ -90,7 +98,7 @@ export default function Projects() {
 
         {/* Project Cards Grid */}
         <div className="projects-grid">
-          {projects.map((project) => (
+          {visibleProjects.map((project) => (
             <div
               key={project.id}
               className="project-card"
@@ -225,9 +233,28 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div style={{ textAlign: "center", marginTop: "3rem" }}>
-          <a
+        {/* View More / View Less & CTA - Flex Container */}
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "1rem", marginTop: "3rem" }}>
+          {hasMore && (
+            <button
+              id="projects-view-more-btn"
+              type="button"
+              onClick={() => setShowAll((prev) => !prev)}
+              className="btn btn-outline"
+              style={{
+                fontSize: "0.95rem",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                cursor: "pointer",
+              }}
+            >
+              {showAll
+                ? "View Less ↑"
+                : `View More (${projects.length - INITIAL_COUNT}) ↓`}
+            </button>
+          )}
+          <Link
             id="github-profile-btn"
             href="https://github.com/Abid-Hossain-Sifat"
             target="_blank"
@@ -242,7 +269,7 @@ export default function Projects() {
           >
             <FaGithub />
             View All on GitHub
-          </a>
+          </Link>
         </div>
       </div>
 
