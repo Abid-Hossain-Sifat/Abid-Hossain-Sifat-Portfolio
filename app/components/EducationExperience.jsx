@@ -1,50 +1,53 @@
 "use client";
 
+import { GraduationCap, BookOpen, Laptop } from "lucide-react";
+import { motion } from "framer-motion";
+
 const education = [
   {
     id: "Diploma",
     degree: "Diploma Engineering in Computer Science & Technology",
     institution: "National Polytechnic Institute, Dhaka",
     period: "2022 — Present",
-    icon: "🎓",
+    icon: <GraduationCap size={24} style={{ color: "var(--color-primary-light)" }} />,
     description:
       "Diploma in Computer Science & Technology, building a strong foundation in core computer science subjects including Data Structures, Database Management Systems, Operating Systems, Computer Networks, Software Engineering, and Web Development. Actively participating in programming practice and problem-solving activities.",
     highlights: ["NPI Programming Club Member"],
   },
 ];
 
-const experience = [
-  {
-    id: "exp1",
-    role: "MERN Stack Development (Learning & Practice)",
-    company: "Self-Learning",
-    period: "2025 — Present",
-    type: "Learning",
-    icon: "📚",
-    description:
-      "Actively learning full-stack development using the MERN stack by building practice projects. Focused on developing REST APIs, responsive web applications, and improving frontend-backend integration skills.",
-    achievements: [
-      "Built multiple practice web applications",
-      "Developed REST API projects using Node.js & Express",
-      "Improved React.js UI development skills",
-    ],
-  },
-  {
-    id: "exp2",
-    role: "Personal Projects Developer",
-    company: "Self Projects",
-    period: "2025 — Present",
-    type: "Projects",
-    icon: "💻",
-    description:
-      "Building real-world inspired projects to strengthen full-stack development skills and improve problem-solving ability.",
-    achievements: [
-      "Created responsive frontend projects using React",
-      "Practiced MongoDB data modeling",
-      "Improving clean code and project structure",
-    ],
-  },
-];
+// const experience = [
+//   {
+//     id: "exp1",
+//     role: "MERN Stack Development (Learning & Practice)",
+//     company: "Self-Learning",
+//     period: "2025 — Present",
+//     type: "Learning",
+//     icon: <BookOpen size={24} style={{ color: "var(--color-primary-light)" }} />,
+//     description:
+//       "Actively learning full-stack development using the MERN stack by building practice projects. Focused on developing REST APIs, responsive web applications, and improving frontend-backend integration skills.",
+//     achievements: [
+//       "Built multiple practice web applications",
+//       "Developed REST API projects using Node.js & Express",
+//       "Improved React.js UI development skills",
+//     ],
+//   },
+//   {
+//     id: "exp2",
+//     role: "Personal Projects Developer",
+//     company: "Self Projects",
+//     period: "2025 — Present",
+//     type: "Projects",
+//     icon: <Laptop size={24} style={{ color: "var(--color-primary-light)" }} />,
+//     description:
+//       "Building real-world inspired projects to strengthen full-stack development skills and improve problem-solving ability.",
+//     achievements: [
+//       "Created responsive frontend projects using React",
+//       "Practiced MongoDB data modeling",
+//       "Improving clean code and project structure",
+//     ],
+//   },
+//   ];
 
 export default function EducationExperience() {
   return (
@@ -75,7 +78,13 @@ export default function EducationExperience() {
         style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1.5rem" }}
       >
         {/* Education Header */}
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+        <motion.div
+          style={{ textAlign: "center", marginBottom: "3rem" }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <span
             style={{
               display: "inline-block",
@@ -118,12 +127,12 @@ export default function EducationExperience() {
               margin: "1rem auto 0",
             }}
           />
-        </div>
+        </motion.div>
 
         {/* Timeline (Education) */}
         <div style={{ display: "grid", gap: "1.5rem" }}>
-          {education.map((edu) => (
-            <div
+          {education.map((edu, idx) => (
+            <motion.div
               key={edu.id}
               className="edu-experience-card"
               style={{
@@ -138,6 +147,10 @@ export default function EducationExperience() {
                 position: "relative",
                 overflow: "hidden",
               }}
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: idx * 0.15, type: "spring", stiffness: 80 }}
             >
               {/* Left accent */}
               <div
@@ -234,12 +247,12 @@ export default function EducationExperience() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Experience */}
-        <div style={{ marginTop: "3.5rem" }}>
+        {/* <div style={{ marginTop: "3.5rem" }}>
           <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
             <span
               style={{
@@ -401,7 +414,7 @@ export default function EducationExperience() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Styled JSX/CSS Injector for smooth hover transitions */}

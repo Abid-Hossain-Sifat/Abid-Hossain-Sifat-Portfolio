@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { Palette, Settings, Wrench } from "lucide-react";
+import { motion } from "framer-motion";
 
 const skillCategories = [
   {
     title: "Frontend",
-    icon: "🎨",
+    icon: <Palette size={20} />,
     skills: [
       { name: "HTML5 / CSS3", level: 92 },
       { name: "JavaScript (ES6+)", level: 85 },
@@ -15,7 +16,7 @@ const skillCategories = [
   },
   {
     title: "Backend",
-    icon: "⚙️",
+    icon: <Settings size={20} />,
     skills: [
       { name: "Node.js", level: 72 },
       { name: "Express.js", level: 70 },
@@ -26,7 +27,7 @@ const skillCategories = [
   },
   {
     title: "Tools & Others",
-    icon: "🛠️",
+    icon: <Wrench size={20} />,
     skills: [
       { name: "Git & GitHub", level: 85 },
       { name: "VS Code", level: 95 },
@@ -52,7 +53,26 @@ const techIcons = [
   "Vercel",
 ];
 
-function SkillBar({ name, level, visible }) {
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 80, damping: 15 },
+  },
+};
+
+function SkillBar({ name, level }) {
   return (
     <div style={{ marginBottom: "1.1rem" }}>
       <div
@@ -90,15 +110,17 @@ function SkillBar({ name, level, visible }) {
           overflow: "hidden",
         }}
       >
-        <div
+        <motion.div
           style={{
             height: "100%",
             borderRadius: "999px",
             background: "var(--gradient-primary)",
-            width: visible ? `${level}%` : "0%",
-            transition: "width 1.2s cubic-bezier(0.4,0,0.2,1)",
             boxShadow: "0 0 10px rgba(124,58,237,0.4)",
           }}
+          initial={{ width: 0 }}
+          whileInView={{ width: `${level}%` }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
         />
       </div>
     </div>
@@ -106,25 +128,6 @@ function SkillBar({ name, level, visible }) {
 }
 
 export default function Skills() {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const currentRef = ref.current;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisible(true);
-      },
-      { threshold: 0.2 },
-    );
-
-    if (currentRef) obs.observe(currentRef);
-    return () => {
-      if (currentRef) obs.unobserve(currentRef);
-      obs.disconnect();
-    };
-  }, []);
-
   return (
     <section
       id="skills"
@@ -134,7 +137,6 @@ export default function Skills() {
         position: "relative",
         overflow: "hidden",
       }}
-      ref={ref}
     >
       <div
         style={{
@@ -154,7 +156,13 @@ export default function Skills() {
         style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1.5rem" }}
       >
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+        <motion.div
+          style={{ textAlign: "center", marginBottom: "3.5rem" }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <span
             style={{
               display: "inline-block",
@@ -206,12 +214,22 @@ export default function Skills() {
           >
             Technologies and tools I use to bring ideas to life
           </p>
-        </div>
+        </motion.div>
 
         {/* Skill categories */}
-        <div className="skills-grid">
+        <motion.div
+          className="skills-grid"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {skillCategories.map((cat) => (
-            <div key={cat.title} className="skill-card">
+            <motion.div
+              key={cat.title}
+              className="skill-card"
+              variants={cardVariants}
+            >
               <div
                 style={{
                   display: "flex",
@@ -247,19 +265,20 @@ export default function Skills() {
                 </h3>
               </div>
               {cat.skills.map((s) => (
-                <SkillBar
-                  key={s.name}
-                  name={s.name}
-                  level={s.level}
-                  visible={visible}
-                />
+                <SkillBar key={s.name} name={s.name} level={s.level} />
               ))}
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Tech icon cloud */}
-        <div style={{ marginTop: "3.5rem", textAlign: "center" }}>
+        <motion.div
+          style={{ marginTop: "3.5rem", textAlign: "center" }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           <p
             style={{
               fontSize: "0.82rem",
@@ -280,13 +299,21 @@ export default function Skills() {
               gap: "0.6rem",
             }}
           >
-            {techIcons.map((t) => (
-              <span key={t} className="tag" style={{ fontSize: "0.82rem" }}>
+            {techIcons.map((t, idx) => (
+              <motion.span
+                key={t}
+                className="tag"
+                style={{ fontSize: "0.82rem" }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.05, type: "spring", stiffness: 100 }}
+              >
                 {t}
-              </span>
+              </motion.span>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Standard React Internal CSS Injector */}

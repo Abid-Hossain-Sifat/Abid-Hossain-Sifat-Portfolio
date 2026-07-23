@@ -314,6 +314,7 @@ export default function Footer() {
             },
             children: _jsxs("p", {
               style: { fontSize: "0.82rem", color: "var(--color-text-subtle)" },
+              suppressHydrationWarning: true,
               children: [
                 "© ",
                 new Date().getFullYear(),

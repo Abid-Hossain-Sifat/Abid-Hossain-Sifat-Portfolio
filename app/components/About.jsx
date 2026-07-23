@@ -1,9 +1,44 @@
+"use client";
+
+import { Rocket, Hourglass, Wrench, Gem } from "lucide-react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 80, damping: 15 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.9, y: 30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 80, damping: 15 },
+  },
+};
+
 export default function About() {
   const stats = [
-    { value: "3+", label: "Projects Completed", icon: "🚀" },
-    { value: "1+", label: "Years Experience", icon: "⏳" },
-    { value: "10+", label: "Modern Tools", icon: "🛠️" },
-    { value: "100%", label: "Commitment", icon: "💎" },
+    { value: "3+", label: "Projects Completed", icon: <Rocket size={16} /> },
+    { value: "1+", label: "Years Experience", icon: <Hourglass size={16} /> },
+    { value: "10+", label: "Modern Tools", icon: <Wrench size={16} /> },
+    { value: "100%", label: "Commitment", icon: <Gem size={16} /> },
   ];
 
   const highlights = [
@@ -293,17 +328,6 @@ export default function About() {
           -webkit-text-fill-color: transparent;
         }
 
-        .reveal-item {
-          opacity: 0;
-          transform: translateY(30px);
-          animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-          animation-delay: calc(var(--d) * 0.15s);
-        }
-
-        @keyframes fadeInUp {
-          to { opacity: 1; transform: translateY(0); }
-        }
-
         @media (max-width: 1024px) {
           .about-grid { gap: 3rem; }
         }
@@ -345,17 +369,29 @@ export default function About() {
 
         <div className="container relative z-10">
           {/* Section Header */}
-          <div className="section-header reveal-item" style={{ "--d": 1 }}>
+          <motion.div
+            className="section-header"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+          >
             <span className="section-subtitle">Discovery</span>
             <h2 className="section-title">
               About <span className="text-gradient">Me</span>
             </h2>
             <div className="section-divider" />
-          </div>
+          </motion.div>
 
           <div className="about-grid">
             {/* Left: Identity Card */}
-            <div className="about-visual reveal-item" style={{ "--d": 2 }}>
+            <motion.div
+              className="about-visual"
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
               <div className="identity-card">
                 <div className="card-glass-effect" />
                 <div className="identity-header">
@@ -391,27 +427,33 @@ export default function About() {
 
               {/* Decorative element */}
               <div className="visual-decoration" />
-            </div>
+            </motion.div>
 
             {/* Right: Story Content */}
-            <div className="about-content">
+            <motion.div
+              className="about-content"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
               <div className="story-stack">
                 {highlights.map((item, idx) => (
-                  <div
+                  <motion.div
                     key={idx}
-                    className="story-item reveal-item"
-                    style={{ "--d": idx + 3 }}
+                    className="story-item"
+                    variants={itemVariants}
                   >
                     <h3 className="story-title">
                       <span className="title-prefix">0{idx + 1}.</span>{" "}
                       {item.title}
                     </h3>
                     <p className="story-text">{item.content}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
-              <div className="about-tags reveal-item" style={{ "--d": 6 }}>
+              <motion.div className="about-tags" variants={itemVariants}>
                 {[
                   "Problem Solving",
                   "Fast Learner",
@@ -423,8 +465,8 @@ export default function About() {
                     {tag}
                   </span>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>

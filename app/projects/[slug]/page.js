@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { projects } from '../../data/projects';
 import { FaGithub } from 'react-icons/fa';
+import { FileText, Settings, Zap, Rocket } from 'lucide-react';
 
 export async function generateStaticParams() {
   return projects.map(p => ({ slug: p.id }));
@@ -63,7 +64,7 @@ export default async function ProjectDetailPage({ params }) {
           {/* Description */}
           <div style={{ background: 'var(--gradient-card)', border: '1px solid var(--color-border-subtle)', borderRadius: '18px', padding: '2rem' }}>
             <h2 style={{ fontFamily: 'var(--font-outfit)', fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-text)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span style={{ color: 'var(--color-primary-light)' }}>📝</span> Project Overview
+              <FileText size={18} style={{ color: 'var(--color-primary-light)' }} /> Project Overview
             </h2>
             <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.85, fontSize: '0.95rem' }}>{project.description}</p>
           </div>
@@ -71,7 +72,7 @@ export default async function ProjectDetailPage({ params }) {
           {/* Tech Stack */}
           <div style={{ background: 'var(--gradient-card)', border: '1px solid var(--color-border-subtle)', borderRadius: '18px', padding: '2rem' }}>
             <h2 style={{ fontFamily: 'var(--font-outfit)', fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-text)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span style={{ color: 'var(--color-primary-light)' }}>⚙️</span> Tech Stack
+              <Settings size={18} style={{ color: 'var(--color-primary-light)' }} /> Tech Stack
             </h2>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
               {project.techStack.map(tech => (
@@ -83,7 +84,7 @@ export default async function ProjectDetailPage({ params }) {
           {/* Challenges */}
           <div style={{ background: 'var(--gradient-card)', border: '1px solid var(--color-border-subtle)', borderRadius: '18px', padding: '2rem' }}>
             <h2 style={{ fontFamily: 'var(--font-outfit)', fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-text)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span style={{ color: 'var(--color-primary-light)' }}>⚡</span> Challenges Faced
+              <span style={{ display: 'inline-flex', alignItems: 'center' }}><Zap size={18} style={{ color: 'var(--color-primary-light)' }} /></span> Challenges Faced
             </h2>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               {project.challenges.map((c, i) => (
@@ -98,7 +99,7 @@ export default async function ProjectDetailPage({ params }) {
           {/* Future Improvements */}
           <div style={{ background: 'var(--gradient-card)', border: '1px solid var(--color-border-subtle)', borderRadius: '18px', padding: '2rem' }}>
             <h2 style={{ fontFamily: 'var(--font-outfit)', fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-text)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span style={{ color: 'var(--color-primary-light)' }}>🚀</span> Future Improvements
+              <Rocket size={18} style={{ color: 'var(--color-primary-light)' }} /> Future Improvements
             </h2>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               {project.improvements.map((item, i) => (

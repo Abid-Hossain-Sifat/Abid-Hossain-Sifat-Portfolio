@@ -22,15 +22,33 @@ export default function Navbar() {
       setScrolled(window.scrollY > 20);
       if (pathname === "/") {
         const sections = navLinks.map((l) => l.href.replace("#", ""));
+        let found = false;
         for (let i = sections.length - 1; i >= 0; i--) {
           const el = document.getElementById(sections[i]);
           if (el && window.scrollY >= el.offsetTop - 120) {
             setActiveSection(sections[i]);
+            found = true;
             break;
           }
         }
+        if (!found) {
+          setActiveSection("home");
+        }
+      } else {
+        setActiveSection("");
       }
     };
+
+    handleScroll();
+
+    if (pathname === "/" && typeof window !== "undefined" && window.location.hash) {
+      const hashSection = window.location.hash.replace("#", "");
+      const validSections = navLinks.map((l) => l.href.replace("#", ""));
+      if (validSections.includes(hashSection)) {
+        setActiveSection(hashSection);
+      }
+    }
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);

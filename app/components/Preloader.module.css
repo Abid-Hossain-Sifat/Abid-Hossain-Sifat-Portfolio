@@ -1,0 +1,103 @@
+.preloader-container {
+  position: fixed;
+  inset: 0;
+  background: #0d0d14;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+  overflow: hidden;
+}
+
+/* Slide up out of view when loading is done */
+.slide-up {
+  transform: translateY(-100%);
+}
+
+.name-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.name-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-family: var(--font-outfit), 'Outfit', sans-serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #f1f0f7;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* Individual letter styling */
+.letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  filter: blur(8px);
+  animation: letterFadeUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: calc(var(--delay-index) * 0.06s);
+}
+
+/* Space between words */
+.space {
+  width: 0.4em;
+}
+
+/* Highlight middle name with website theme gradient */
+.highlight-word {
+  background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(167, 139, 250, 0.2);
+}
+
+/* Sleek animated line underneath */
+.underline {
+  width: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+  margin-top: 1.25rem;
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.6);
+  animation: drawLine 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 1.3s;
+}
+
+/* Background grid details for premium feel */
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle at 2px 2px,
+    rgba(124, 58, 237, 0.04) 1.5px,
+    transparent 0
+  );
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at center, black, transparent 70%);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Keyframes */
+@keyframes letterFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes drawLine {
+  to {
+    width: 120px;
+  }
+}
