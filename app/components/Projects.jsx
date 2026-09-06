@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { projects } from "../data/projects";
+import { projects as initialProjects } from "../data/projects";
+import { project as fetchProjects } from "@/lib/data";
 
 const INITIAL_COUNT = 3;
 
@@ -20,20 +21,45 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, scale: 0.92, y: 25 },
+  hidden: { opacity: 0, scale: 0.95, y: 20 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
     transition: { type: "spring", stiffness: 85, damping: 15 },
   },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    y: 20,
+    transition: { duration: 0.2 },
+  },
 };
 
 export default function Projects() {
+  const [projectList, setProjectList] = useState(initialProjects);
   const [showAll, setShowAll] = useState(false);
 
-  const visibleProjects = showAll ? projects : projects.slice(0, INITIAL_COUNT);
-  const hasMore = projects.length > INITIAL_COUNT;
+  useEffect(() => {
+    let isMounted = true;
+    async function loadProjects() {
+      try {
+        const data = await fetchProjects();
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          setProjectList(data);
+        }
+      } catch (err) {
+        console.error("Failed to load projects from API:", err);
+      }
+    }
+    loadProjects();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const visibleProjects = showAll ? projectList : projectList.slice(0, INITIAL_COUNT);
+  const hasMore = projectList.length > INITIAL_COUNT;
 
   return (
     <section
@@ -131,13 +157,16 @@ export default function Projects() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence>
             {visibleProjects.map((project) => (
               <motion.div
-                key={project.id}
+                key={project.id || project._id}
                 layout
                 className="project-card"
                 variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -157,9 +186,13 @@ export default function Projects() {
                   }}
                 >
                   <Image
-                    src={project.image}
+                    src={project.image || "/ArtHub.png"}
                     alt={project.title}
                     fill
+                    unoptimized={
+                      typeof project.image === "string" &&
+                      project.image.startsWith("http")
+                    }
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="project-image"
                     style={{ objectFit: "cover", objectPosition: "top" }}
@@ -208,7 +241,7 @@ export default function Projects() {
                   <div
                     style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}
                   >
-                    {project.tags.map((tag) => (
+                    {(project.tags || []).map((tag) => (
                       <span
                         key={tag}
                         className="tag"
@@ -227,8 +260,8 @@ export default function Projects() {
                     }}
                   >
                     <Link
-                      id={`project-details-${project.id}`}
-                      href={`/projects/${project.id}`}
+                      id={`project-details-${project.id || project._id}`}
+                      href={`/projects/${project.id || project._id}`}
                       className="btn btn-primary"
                       style={{
                         flex: 1,
@@ -240,7 +273,7 @@ export default function Projects() {
                       View Details →
                     </Link>
                     <a
-                      id={`project-live-${project.id}`}
+                      id={`project-live-${project.id || project._id}`}
                       href={project.liveLink}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -294,7 +327,7 @@ export default function Projects() {
             >
               {showAll
                 ? "View Less ↑"
-                : `View More (${projects.length - INITIAL_COUNT}) ↓`}
+                : `View More (${projectList.length - INITIAL_COUNT}) ↓`}
             </button>
           )}
           <Link
