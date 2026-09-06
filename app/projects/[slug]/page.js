@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { projects } from '../../data/projects';
 import { project as fetchProjects } from '@/lib/data';
 import { FaGithub } from 'react-icons/fa';
 import {
@@ -21,18 +20,9 @@ export const dynamicParams = true;
 async function getProjectBySlug(slug) {
   if (!slug) return null;
 
-  // 1. Check local static projects first
-  const staticProj = projects.find(
-    (p) =>
-      p.id?.toLowerCase() === slug.toLowerCase() ||
-      p.title?.toLowerCase().replace(/\s+/g, '-') === slug.toLowerCase()
-  );
-  if (staticProj) return staticProj;
-
-  // 2. Fetch from API
   try {
     const apiProjects = await fetchProjects();
-    const foundApi = apiProjects.find(
+    const foundApi = (apiProjects || []).find(
       (p) =>
         (p.id && String(p.id).toLowerCase() === slug.toLowerCase()) ||
         (p._id && String(p._id).toLowerCase() === slug.toLowerCase()) ||
@@ -77,9 +67,6 @@ async function getProjectBySlug(slug) {
   return null;
 }
 
-export async function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.id }));
-}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import { projects as initialProjects } from "../data/projects";
 import { project as fetchProjects } from "@/lib/data";
 
 const INITIAL_COUNT = 3;
@@ -37,19 +36,23 @@ const cardVariants = {
 };
 
 export default function Projects() {
-  const [projectList, setProjectList] = useState(initialProjects);
+  const [projectList, setProjectList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
     async function loadProjects() {
       try {
+        setLoading(true);
         const data = await fetchProjects();
-        if (isMounted && Array.isArray(data) && data.length > 0) {
+        if (isMounted && Array.isArray(data)) {
           setProjectList(data);
         }
       } catch (err) {
         console.error("Failed to load projects from API:", err);
+      } finally {
+        if (isMounted) setLoading(false);
       }
     }
     loadProjects();
@@ -150,158 +153,193 @@ export default function Projects() {
         </motion.div>
 
         {/* Project Cards Grid */}
-        <motion.div
-          className="projects-grid"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          <AnimatePresence>
-            {visibleProjects.map((project) => (
-              <motion.div
-                key={project.id || project._id}
-                layout
-                className="project-card"
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
+        {loading ? (
+          <div className="projects-grid">
+            {[1, 2, 3].map((n) => (
+              <div
+                key={n}
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
+                  height: "380px",
                   borderRadius: "16px",
-                  overflow: "hidden",
-                  transition: "border-color 0.3s, transform 0.3s, box-shadow 0.3s",
+                  background: "var(--gradient-card)",
+                  border: "1px solid var(--color-border-subtle)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: 0.7,
                 }}
               >
-                {/* Project Image */}
                 <div
-                  className="image-container"
                   style={{
-                    position: "relative",
-                    height: "220px",
-                    overflow: "hidden",
-                    borderRadius: "0",
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    border: "3px solid rgba(124, 58, 237, 0.2)",
+                    borderTopColor: "var(--color-primary-light)",
+                    animation: "spin 1s linear infinite",
                   }}
-                >
-                  <Image
-                    src={project.image || "/ArtHub.png"}
-                    alt={project.title}
-                    fill
-                    unoptimized={
-                      typeof project.image === "string" &&
-                      project.image.startsWith("http")
-                    }
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="project-image"
-                    style={{ objectFit: "cover", objectPosition: "top" }}
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background:
-                        "linear-gradient(to top, rgba(13,13,20,0.8) 0%, transparent 60%)",
-                    }}
-                  />
-                </div>
-
-                {/* Card Body */}
-                <div
+                />
+              </div>
+            ))}
+          </div>
+        ) : projectList.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "4rem 1rem", color: "var(--color-text-muted)" }}>
+            <p style={{ fontSize: "1.05rem" }}>No projects found from API.</p>
+          </div>
+        ) : (
+          <motion.div
+            className="projects-grid"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            <AnimatePresence>
+              {visibleProjects.map((project) => (
+                <motion.div
+                  key={project.id || project._id}
+                  layout
+                  className="project-card"
+                  variants={cardVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
                   style={{
-                    padding: "1.5rem",
                     display: "flex",
                     flexDirection: "column",
-                    gap: "0.9rem",
-                    flex: 1,
+                    borderRadius: "16px",
+                    overflow: "hidden",
+                    transition: "border-color 0.3s, transform 0.3s, box-shadow 0.3s",
                   }}
                 >
-                  <h3
+                  {/* Project Image */}
+                  <div
+                    className="image-container"
                     style={{
-                      fontFamily: "var(--font-outfit)",
-                      fontSize: "1.15rem",
-                      fontWeight: 700,
-                      color: "var(--color-text)",
+                      position: "relative",
+                      height: "220px",
+                      overflow: "hidden",
+                      borderRadius: "0",
                     }}
                   >
-                    {project.title}
-                  </h3>
-                  <p
+                    <Image
+                      src={project.image || "/ArtHub.png"}
+                      alt={project.title}
+                      fill
+                      unoptimized={
+                        typeof project.image === "string" &&
+                        project.image.startsWith("http")
+                      }
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="project-image"
+                      style={{ objectFit: "cover", objectPosition: "top" }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                          "linear-gradient(to top, rgba(13,13,20,0.8) 0%, transparent 60%)",
+                      }}
+                    />
+                  </div>
+
+                  {/* Card Body */}
+                  <div
                     style={{
-                      color: "var(--color-text-muted)",
-                      fontSize: "0.88rem",
-                      lineHeight: 1.7,
+                      padding: "1.5rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.9rem",
                       flex: 1,
                     }}
                   >
-                    {project.shortDesc}
-                  </p>
-                  {/* Tags */}
-                  <div
-                    style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}
-                  >
-                    {(project.tags || []).map((tag) => (
-                      <span
-                        key={tag}
-                        className="tag"
-                        style={{ fontSize: "0.73rem" }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  {/* Actions */}
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "0.75rem",
-                      paddingTop: "0.25rem",
-                    }}
-                  >
-                    <Link
-                      id={`project-details-${project.id || project._id}`}
-                      href={`/projects/${project.id || project._id}`}
-                      className="btn btn-primary"
+                    <h3
                       style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        padding: "0.6rem 1rem",
-                        fontSize: "0.85rem",
+                        fontFamily: "var(--font-outfit)",
+                        fontSize: "1.15rem",
+                        fontWeight: 700,
+                        color: "var(--color-text)",
                       }}
                     >
-                      View Details →
-                    </Link>
-                    <a
-                      id={`project-live-${project.id || project._id}`}
-                      href={project.liveLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-ghost"
-                      style={{ padding: "0.6rem 0.9rem", fontSize: "0.85rem" }}
-                      aria-label="Live Demo"
+                      {project.title}
+                    </h3>
+                    <p
+                      style={{
+                        color: "var(--color-text-muted)",
+                        fontSize: "0.88rem",
+                        lineHeight: 1.7,
+                        flex: 1,
+                      }}
                     >
-                      <svg
-                        width="15"
-                        height="15"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                      {project.shortDesc}
+                    </p>
+                    {/* Tags */}
+                    <div
+                      style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}
+                    >
+                      {(project.tags || []).map((tag) => (
+                        <span
+                          key={tag}
+                          className="tag"
+                          style={{ fontSize: "0.73rem" }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    {/* Actions */}
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "0.75rem",
+                        paddingTop: "0.25rem",
+                      }}
+                    >
+                      <Link
+                        id={`project-details-${project.id || project._id}`}
+                        href={`/projects/${project.id || project._id}`}
+                        className="btn btn-primary"
+                        style={{
+                          flex: 1,
+                          justifyContent: "center",
+                          padding: "0.6rem 1rem",
+                          fontSize: "0.85rem",
+                        }}
                       >
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                      </svg>
-                    </a>
+                        View Details →
+                      </Link>
+                      <a
+                        id={`project-live-${project.id || project._id}`}
+                        href={project.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-ghost"
+                        style={{ padding: "0.6rem 0.9rem", fontSize: "0.85rem" }}
+                        aria-label="Live Demo"
+                      >
+                        <svg
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                      </a>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
 
         {/* View More / View Less & CTA - Flex Container */}
         <motion.div
